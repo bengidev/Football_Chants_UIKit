@@ -5,6 +5,7 @@
 //  Created by Bambang Tri Rahmat Doni on 12/12/23.
 //
 
+import SwiftUI
 import UIKit
 
 class AppViewController: UIViewController {
@@ -27,3 +28,14 @@ class AppViewController: UIViewController {
     */
 
 }
+
+#if DEBUG
+@available(iOS 13, *)
+struct AppViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        ViewControllerPreview(AppViewController())
+            .edgesIgnoringSafeArea(.all)
+    }
+}
+#endif
+
