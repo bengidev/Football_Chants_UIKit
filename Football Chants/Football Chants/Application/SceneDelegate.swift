@@ -18,8 +18,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = (scene as? UIWindowScene) else { return }
 
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.shadowColor = .clear
+        
+        let navigationBar = UINavigationBar.appearance()
+        navigationBar.prefersLargeTitles = true
+        navigationBar.standardAppearance = navigationBarAppearance
+        navigationBar.compactAppearance = navigationBarAppearance
+        navigationBar.scrollEdgeAppearance = navigationBarAppearance
+        
+        let viewController = AppViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.title = "Football Chants"
+        
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = AppViewController()
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 
