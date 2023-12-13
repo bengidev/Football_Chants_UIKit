@@ -45,15 +45,9 @@ final class TeamView: UIView {
     
     private lazy var testButton: UIButton = {
         let bt = UIButton(type: .system)
-        bt.translatesAutoresizingMaskIntoConstraints = false
-        bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        bt.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 15)
-        bt.setTitle("Play Chants", for: .normal)
-        bt.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        bt.setAppStyle()
+        bt.setTitle("Play Chant", for: .normal)
         bt.setImage(.init(systemName: "play.fill"), for: .normal)
-        bt.tintColor = .white
-        bt.backgroundColor = .systemPink
-        bt.layer.cornerRadius = 15.0
         
         return bt
     }()
@@ -72,6 +66,7 @@ final class TeamView: UIView {
         self.addSubview(self.baseView)
         self.baseView.addSubview(self.containerView)
         self.containerView.addSubview(self.tableView)
+        self.containerView.addSubview(self.testButton)
         
         self.baseView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
@@ -87,6 +82,13 @@ final class TeamView: UIView {
         self.tableView.snp.makeConstraints({ make in
             make.top.bottom.leading.trailing.equalToSuperview()
         })
+        
+        self.testButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalTo(150.0)
+            make.height.equalTo(44.0)
+        }
     }
 }
 

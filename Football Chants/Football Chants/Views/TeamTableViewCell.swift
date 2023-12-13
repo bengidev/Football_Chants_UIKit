@@ -6,15 +6,17 @@
 //
 
 import SnapKit
+import SwiftUI
 import UIKit
 
 final class TeamTableViewCell: UITableViewCell {
     static let cellIdentifier = "TeamTableViewCellIdentifier"
-    
+
     private lazy var nameLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        lb.text = "tester"
         
         return lb
     }()
@@ -44,3 +46,13 @@ final class TeamTableViewCell: UITableViewCell {
         }
     }
 }
+
+#if DEBUG
+@available(iOS 13, *)
+struct TeamTableViewCell_Previews: PreviewProvider {
+    static var previews: some View {
+        ViewPreview(TeamTableViewCell())
+            .previewLayout(.sizeThatFits)
+    }
+}
+#endif

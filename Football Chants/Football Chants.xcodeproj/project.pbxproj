@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7CDCCF7172EC0CF39FD88797 /* Pods_Football_Chants.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BDF1AD8C616ECE58946561 /* Pods_Football_Chants.framework */; };
+		B6181C462B29AF24008B5014 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6181C452B29AF24008B5014 /* UIButton+Extension.swift */; };
 		B627EBA82B2846F0004D7598 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B627EBA72B2846F0004D7598 /* AppDelegate.swift */; };
 		B627EBAA2B2846F0004D7598 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B627EBA92B2846F0004D7598 /* SceneDelegate.swift */; };
 		B627EBB12B2846F2004D7598 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B627EBB02B2846F2004D7598 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		0983A65D3BBFF7CE8FBA237D /* Pods-Football Chants.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Football Chants.debug.xcconfig"; path = "Target Support Files/Pods-Football Chants/Pods-Football Chants.debug.xcconfig"; sourceTree = "<group>"; };
 		47AC6DEDE9CBFB787ACB194A /* Pods-Football Chants.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Football Chants.release.xcconfig"; path = "Target Support Files/Pods-Football Chants/Pods-Football Chants.release.xcconfig"; sourceTree = "<group>"; };
+		B6181C452B29AF24008B5014 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		B627EBA42B2846F0004D7598 /* Football Chants.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Football Chants.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B627EBA72B2846F0004D7598 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B627EBA92B2846F0004D7598 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,8 +91,8 @@
 			children = (
 				B627EBBC2B28479D004D7598 /* Application */,
 				B627EBBE2B2847D0004D7598 /* Views */,
-				B627EBBD2B2847B7004D7598 /* Resources */,
 				B68B80202B294AB0001A5037 /* Extensions */,
+				B627EBBD2B2847B7004D7598 /* Resources */,
 				B627EBC32B284C75004D7598 /* PreviewView */,
 				B627EBC12B284C75004D7598 /* PreviewViewLegacyOSCompileFix */,
 			);
@@ -150,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				B68B80212B294ADE001A5037 /* UIFont+Extension.swift */,
+				B6181C452B29AF24008B5014 /* UIButton+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -160,7 +163,6 @@
 				0983A65D3BBFF7CE8FBA237D /* Pods-Football Chants.debug.xcconfig */,
 				47AC6DEDE9CBFB787ACB194A /* Pods-Football Chants.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -280,6 +282,7 @@
 			files = (
 				B627EBCE2B284C76004D7598 /* PreviewTabBarItem.swift in Sources */,
 				B627EBCC2B284C76004D7598 /* ViewControllerPreview.swift in Sources */,
+				B6181C462B29AF24008B5014 /* UIButton+Extension.swift in Sources */,
 				B627EBC92B284C76004D7598 /* DesignTime+BackDeploy.swift in Sources */,
 				B627EBC02B2847DE004D7598 /* AppViewController.swift in Sources */,
 				B627EBCB2B284C76004D7598 /* TabBarControllerPreview.swift in Sources */,
