@@ -9,13 +9,12 @@ import SwiftUI
 import UIKit
 
 final class AppViewController: UIViewController {
-    private let uiView: UIView = TeamView()
-    
+    private let uiView = TeamView()
+
     override func loadView() {
         super.loadView()
-        
+
         self.navigationItem.title = "Football Chants"
-        self.view.backgroundColor = .lightGray
         
         self.view = self.uiView
     }
@@ -24,7 +23,6 @@ final class AppViewController: UIViewController {
         super.viewDidLoad()
 
     }
-
 }
 
 #if DEBUG

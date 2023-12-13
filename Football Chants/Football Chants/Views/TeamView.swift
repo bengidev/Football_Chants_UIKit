@@ -18,7 +18,7 @@ final class TeamView: UIView {
     }()
     
     private lazy var tableView: UITableView = {
-        let vw = UITableView(frame: .zero, style: .plain)
+        let vw = UITableView(frame: .zero, style: .insetGrouped)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.allowsSelection = true
@@ -32,7 +32,21 @@ final class TeamView: UIView {
         
         return vw
     }()
-
+    
+    private lazy var testButton: UIButton = {
+        let bt = UIButton(type: .system)
+        bt.translatesAutoresizingMaskIntoConstraints = false
+        bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        bt.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 15)
+        bt.setTitle("Play Chants", for: .normal)
+        bt.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        bt.setImage(.init(systemName: "play.fill"), for: .normal)
+        bt.tintColor = .white
+        bt.backgroundColor = .systemPink
+        bt.layer.cornerRadius = 15.0
+        
+        return bt
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,37 +59,41 @@ final class TeamView: UIView {
     }
     
     private func setupView() -> Void {
-        self.backgroundColor = .red
-        
         self.addSubview(self.tableViewContainer)
         self.tableViewContainer.addSubview(self.tableView)
+        self.addSubview(self.testButton)
         NSLayoutConstraint.activate([
             self.tableViewContainer.topAnchor.constraint(equalTo: self.topAnchor),
-            self.tableViewContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.tableViewContainer.bottomAnchor.constraint(equalTo: self.testButton.topAnchor, constant: -20.0),
             self.tableViewContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.tableViewContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             self.tableView.widthAnchor.constraint(equalTo: self.tableViewContainer.widthAnchor),
             self.tableView.heightAnchor.constraint(equalTo: self.tableViewContainer.heightAnchor),
+            
+            self.testButton.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.testButton.heightAnchor.constraint(equalToConstant: 44.0),
+            self.testButton.widthAnchor.constraint(equalToConstant: 170.0),
+            self.testButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            
         ])
     }
-
 }
 
 extension TeamView: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Table view data source
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 100
     }
-
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
@@ -83,49 +101,61 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         // Configure the cell...
         
         cell.changeNameLabel(to: "Team Number: \(indexPath.row)")
-
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let lb = UILabel()
+        lb.text = "Team"
+        lb.font = .preferredFont(forTextStyle: .title3).bold()
+        
+        return lb
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     /*
-    // Override to support conditional editing of the table view.
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+     // Override to support conditional editing of the table view.
+     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
     /*
-    // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
-    }
-    */
-
+     // Override to support editing the table view.
+     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
     /*
-    // Override to support rearranging the table view.
-    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
 }
 
 #if DEBUG
@@ -137,4 +167,3 @@ struct TeamView_Previews: PreviewProvider {
     }
 }
 #endif
-

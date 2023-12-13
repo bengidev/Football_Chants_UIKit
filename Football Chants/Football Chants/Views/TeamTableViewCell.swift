@@ -36,13 +36,12 @@ final class TeamTableViewCell: UITableViewCell {
     }
     
     private func setupView() -> Void {
-        self.addSubview(self.nameLabel)
-        
+        self.contentView.addSubview(self.nameLabel)
         NSLayoutConstraint.activate([
-            self.nameLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-            self.nameLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            self.nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-            self.nameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.nameLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+            self.nameLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
+            self.nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            self.nameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
         ])
     }
 }
