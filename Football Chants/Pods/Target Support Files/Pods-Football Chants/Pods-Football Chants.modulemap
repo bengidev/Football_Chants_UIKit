@@ -1,0 +1,6 @@
+framework module Pods_Football_Chants {
+  umbrella header "Pods-Football Chants-umbrella.h"
+
+  export *
+  module * { export * }
+}

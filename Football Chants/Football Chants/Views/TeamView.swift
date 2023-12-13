@@ -5,11 +5,21 @@
 //  Created by Bambang Tri Rahmat Doni on 13/12/23.
 //
 
+import SnapKit
 import SwiftUI
 import UIKit
 
 final class TeamView: UIView {
-    private lazy var tableViewContainer: UIView = {
+    private lazy var baseView: UIView = {
+        let vw = UIView()
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vw.backgroundColor = .lightGray
+        
+        return vw
+    }()
+    
+    private lazy var containerView: UIView = {
         let vw = UIView()
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -59,24 +69,24 @@ final class TeamView: UIView {
     }
     
     private func setupView() -> Void {
-        self.addSubview(self.tableViewContainer)
-        self.tableViewContainer.addSubview(self.tableView)
-        self.addSubview(self.testButton)
-        NSLayoutConstraint.activate([
-            self.tableViewContainer.topAnchor.constraint(equalTo: self.topAnchor),
-            self.tableViewContainer.bottomAnchor.constraint(equalTo: self.testButton.topAnchor, constant: -20.0),
-            self.tableViewContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.tableViewContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            self.tableView.widthAnchor.constraint(equalTo: self.tableViewContainer.widthAnchor),
-            self.tableView.heightAnchor.constraint(equalTo: self.tableViewContainer.heightAnchor),
-            
-            self.testButton.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            self.testButton.heightAnchor.constraint(equalToConstant: 44.0),
-            self.testButton.widthAnchor.constraint(equalToConstant: 170.0),
-            self.testButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            
-        ])
+        self.addSubview(self.baseView)
+        self.baseView.addSubview(self.containerView)
+        self.containerView.addSubview(self.tableView)
+        
+        self.baseView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        self.containerView.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            make.leading.equalTo(self.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing)
+        }
+        
+        self.tableView.snp.makeConstraints({ make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        })
     }
 }
 

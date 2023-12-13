@@ -5,6 +5,7 @@
 //  Created by Bambang Tri Rahmat Doni on 13/12/23.
 //
 
+import SnapKit
 import UIKit
 
 final class TeamTableViewCell: UITableViewCell {
@@ -37,11 +38,9 @@ final class TeamTableViewCell: UITableViewCell {
     
     private func setupView() -> Void {
         self.contentView.addSubview(self.nameLabel)
-        NSLayoutConstraint.activate([
-            self.nameLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-            self.nameLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
-            self.nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            self.nameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-        ])
+        
+        self.nameLabel.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview().inset(10.0)
+        }
     }
 }

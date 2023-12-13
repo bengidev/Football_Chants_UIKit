@@ -5,11 +5,12 @@
 //  Created by Bambang Tri Rahmat Doni on 12/12/23.
 //
 
+import SnapKit
 import SwiftUI
 import UIKit
 
 final class AppViewController: UIViewController {
-    private let uiView = TeamView()
+    private lazy var uiView = TeamView()
 
     override func loadView() {
         super.loadView()
@@ -21,8 +22,12 @@ final class AppViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+
+    private func setupView() -> Void {
+        self.view.addSubview(self.uiView)
+    }
+
 }
 
 #if DEBUG
@@ -32,7 +37,6 @@ struct AppViewController_Previews: PreviewProvider {
         NavigationControllerPreview(barStyle: .largeTitle) {
             AppViewController()
         }
-        .edgesIgnoringSafeArea(.all)
     }
 }
 #endif
