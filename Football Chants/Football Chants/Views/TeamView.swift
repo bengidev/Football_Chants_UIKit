@@ -11,28 +11,20 @@ import UIKit
 
 final class TeamView: UIView {
     private lazy var baseView: UIView = {
-        let vw = UIView()
-        vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        let vw = AppView.buildView()
         vw.backgroundColor = .lightGray
         
         return vw
     }()
     
     private lazy var containerView: UIView = {
-        let vw = UIView()
-        vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        let vw = AppView.buildView()
         
         return vw
     }()
     
     private lazy var tableView: UITableView = {
-        let vw = UITableView(frame: .zero, style: .insetGrouped)
-        vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vw.allowsSelection = true
-        vw.separatorStyle = .none
+        let vw = AppView.buildTableView()
         vw.delegate = self
         vw.dataSource = self
         vw.register(
@@ -44,8 +36,7 @@ final class TeamView: UIView {
     }()
     
     private lazy var testButton: UIButton = {
-        let bt = UIButton(type: .system)
-        bt.setAppStyle()
+        let bt = AppView.buildButton()
         bt.setTitle("Play Chant", for: .normal)
         bt.setImage(.init(systemName: "play.fill"), for: .normal)
         
