@@ -1,14 +1,14 @@
 //
-//  TeamCollectionViewCell.swift
+//  TeamTableViewCell.swift
 //  Football Chants
 //
-//  Created by Bambang Tri Rahmat Doni on 12/12/23.
+//  Created by Bambang Tri Rahmat Doni on 13/12/23.
 //
 
 import UIKit
 
-class TeamCollectionViewCell: UICollectionViewCell {
-    static let cellIdentifier = "TeamCollectionViewCellIdentifier"
+final class TeamTableViewCell: UITableViewCell {
+    static let cellIdentifier = "TeamTableViewCellIdentifier"
     
     private lazy var nameLabel: UILabel = {
         let lb = UILabel()
@@ -18,8 +18,8 @@ class TeamCollectionViewCell: UICollectionViewCell {
         return lb
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupView()
     }
     
