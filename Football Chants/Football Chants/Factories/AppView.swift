@@ -78,6 +78,8 @@ final class AppView: NSObject {
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.allowsSelection = true
         vw.separatorStyle = .none
+        vw.rowHeight = UITableView.automaticDimension
+        vw.estimatedRowHeight = 44.0
         
         return vw
     }
