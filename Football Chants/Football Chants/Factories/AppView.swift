@@ -74,7 +74,7 @@ final class AppView: NSObject {
     }
     
     class func buildTableView() -> UITableView {
-        let vw = UITableView(frame: .zero, style: .insetGrouped)
+        let vw = UITableView(frame: .zero, style: .grouped)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.allowsSelection = true
