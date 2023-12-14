@@ -90,6 +90,8 @@ final class AppView: NSObject {
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.contentMode = .scaleAspectFit
+        
+        return vw
     }
 }
 
