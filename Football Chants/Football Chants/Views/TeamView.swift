@@ -39,7 +39,7 @@ final class TeamView: UIView {
         
         return vw
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupView()
@@ -90,10 +90,8 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
         
         // Configure the cell...
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .white.withAlphaComponent(0.5)
-        backgroundView.layer.cornerRadius = 10.0
-        cell.selectedBackgroundView = backgroundView
+        
+        cell.selectionStyle = .none
         
         return cell
     }
