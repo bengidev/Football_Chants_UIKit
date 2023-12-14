@@ -12,15 +12,77 @@ import UIKit
 final class TeamTableViewCell: UITableViewCell {
     static let cellIdentifier = "TeamTableViewCellIdentifier"
 
-    private lazy var nameLabel: UILabel = {
-        let lb = UILabel()
-        lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        lb.text = "tester"
+    private var cellBackgroundColor: UIColor = .red
+    
+    private lazy var containerStackView: UIStackView = {
+        let vw = AppView.buildStackView()
+        vw.axis = .vertical
+        vw.backgroundColor = .clear
+        vw.layer.shadowRadius = 5.0
+        vw.layer.shadowOpacity = 0.5
+        
+        return vw
+    }()
+    
+    private lazy var cellSeparatorView: UIView = {
+        let vw = AppView.buildView()
+        
+        return vw
+    }()
+
+
+    private lazy var vOneStackView: UIStackView = {
+        let vw = AppView.buildStackView()
+        vw.axis = .vertical
+        vw.alignment = .leading
+        vw.layer.cornerRadius = 10.0
+        vw.clipsToBounds = true
+        vw.backgroundColor = self.cellBackgroundColor
+        
+        return vw
+    }()
+    
+    private lazy var teamBadgeView: UIImageView = {
+        let vw = AppView.imageView()
+        vw.image = .init(resource: .manchesterUnitedIc)
+        
+        return vw
+    }()
+
+    private lazy var teamNameLabel: UILabel = {
+        let lb = AppView.buildLabel()
+        lb.text = "Manchester United"
+        lb.font = .preferredFont(forTextStyle: .title2).bold()
+        
+        return lb
+    }()
+
+    private lazy var teamFoundedLabel: UILabel = {
+        let lb = AppView.buildLabel()
+        lb.text = "Founded: 1878"
+        lb.font = .preferredFont(forTextStyle: .headline).italic()
         
         return lb
     }()
     
+    private lazy var teamLeaderLabel: UILabel = {
+        let lb = AppView.buildLabel()
+        lb.text = "Current Manager: Erik ten Hag"
+        lb.font = .preferredFont(forTextStyle: .headline).italic()
+        
+        return lb
+    }()
+    
+    private lazy var teamInfoTextView: UITextView = {
+        let vw = AppView.buildTextView()
+        vw.isScrollEnabled = false
+        vw.backgroundColor = .clear
+        vw.font = .preferredFont(forTextStyle: .footnote)
+        vw.text = "Manchester United Football Club, commonly referred to as Man United (often stylised as Man Utd), or simply United, is a professional football club based in Old Trafford, Greater Manchester, England. The club competes in the Premier League, the top division in the English football league system. Nicknamed the Red Devils, they were founded as Newton Heath LYR Football Club in 1878, but changed their name to Manchester United in 1902. After a spell playing in Clayton, Manchester, the club moved to their current stadium, Old Trafford, in 1910."
+        
+        return vw
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupView()
@@ -31,18 +93,60 @@ final class TeamTableViewCell: UITableViewCell {
         self.setupView()
     }
     
-    func changeNameLabel(to value: String) -> Void {
-        UIView.animate(withDuration: 1.0) {
-            self.nameLabel.text = value
-            self.contentView.layoutIfNeeded()
-        }
-    }
-    
     private func setupView() -> Void {
-        self.contentView.addSubview(self.nameLabel)
+        self.contentView.addSubview(self.containerStackView)
         
-        self.nameLabel.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview().inset(10.0)
+        self.containerStackView.addArrangedSubview(self.vOneStackView)
+        self.containerStackView.addArrangedSubview(self.cellSeparatorView)
+        self.containerStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.vOneStackView.addArrangedSubview(self.teamBadgeView)
+        self.vOneStackView.addArrangedSubview(self.teamNameLabel)
+        self.vOneStackView.addArrangedSubview(self.teamFoundedLabel)
+        self.vOneStackView.addArrangedSubview(self.teamLeaderLabel)
+        self.vOneStackView.addArrangedSubview(self.teamInfoTextView)
+        self.vOneStackView.snp.makeConstraints { make in
+            make.top.equalTo(self.contentView.snp.top)
+            make.bottom.equalTo(self.cellSeparatorView.snp.top).inset(-10.0)
+            make.leading.trailing.equalTo(self.contentView)
+        }
+        
+        self.teamBadgeView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(10.0)
+            make.bottom.equalTo(self.teamNameLabel.snp.top).inset(-20.0)
+            make.leading.equalToSuperview().inset(10.0)
+            make.width.height.equalTo(50.0)
+        }
+        
+        self.teamNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.teamBadgeView.snp.bottom)
+            make.bottom.equalTo(self.teamFoundedLabel.snp.top).inset(-10.0)
+            make.leading.trailing.equalToSuperview().inset(10.0)
+        }
+        
+        self.teamFoundedLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.teamNameLabel.snp.bottom)
+            make.bottom.equalTo(self.teamLeaderLabel.snp.top)
+            make.leading.trailing.equalToSuperview().inset(10.0)
+        }
+        
+        self.teamLeaderLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.teamFoundedLabel.snp.bottom)
+            make.bottom.equalTo(self.teamInfoTextView.snp.top)
+            make.leading.trailing.equalToSuperview().inset(10.0)
+        }
+        
+        self.teamInfoTextView.snp.makeConstraints { make in
+            make.top.equalTo(self.teamLeaderLabel.snp.bottom)
+            make.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        self.cellSeparatorView.snp.makeConstraints { make in
+            make.top.equalTo(self.vOneStackView.snp.bottom)
+            make.bottom.leading.trailing.equalTo(self.contentView)
+            make.height.equalTo(10.0)
         }
     }
 }
