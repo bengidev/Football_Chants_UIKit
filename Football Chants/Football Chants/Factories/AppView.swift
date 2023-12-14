@@ -67,7 +67,7 @@ final class AppView: NSObject {
         let vw = UIStackView()
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vw.spacing = 8.0
+        vw.distribution = .fill
         
         return vw
     }
