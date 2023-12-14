@@ -26,6 +26,7 @@ final class AppView: NSObject {
         bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bt.titleLabel?.font = .preferredFont(forTextStyle: .headline)
         bt.titleLabel?.adjustsFontSizeToFitWidth = true
+        bt.titleLabel?.textAlignment = .center
         bt.tintColor = .white
         bt.backgroundColor = .systemBlue
         bt.layer.cornerRadius = 15.0
@@ -39,7 +40,7 @@ final class AppView: NSObject {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        lb.textAlignment = .center
+        lb.textAlignment = .left
         lb.textColor = .black
         lb.numberOfLines = 0
         lb.adjustsFontSizeToFitWidth = true
@@ -51,7 +52,7 @@ final class AppView: NSObject {
         let vw = UITextView()
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vw.textAlignment = .left
+        vw.textAlignment = .center
         vw.textColor = .black
         vw.textContainerInset = .init(
             top: 10.0,
@@ -73,7 +74,7 @@ final class AppView: NSObject {
     }
     
     class func buildTableView() -> UITableView {
-        let vw = UITableView(frame: .zero, style: .grouped)
+        let vw = UITableView(frame: .zero, style: .insetGrouped)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.allowsSelection = true
