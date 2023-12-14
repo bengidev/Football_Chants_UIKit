@@ -51,7 +51,7 @@ final class AppView: NSObject {
         let vw = UITextView()
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vw.textAlignment = .center
+        vw.textAlignment = .left
         vw.textColor = .black
         vw.textContainerInset = .init(
             top: 10.0,
