@@ -84,6 +84,13 @@ final class AppView: NSObject {
         
         return vw
     }
+    
+    class func imageView() -> UIImageView {
+        let vw = UIImageView()
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vw.contentMode = .scaleAspectFit
+    }
 }
 
 
