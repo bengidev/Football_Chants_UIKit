@@ -10,21 +10,26 @@ import SwiftUI
 import UIKit
 
 final class TeamView: UIView {
-    private lazy var baseView: UIView = {
+    private var containerColor: UIColor = .lightGray
+    
+    private lazy var backgroundView: UIView = {
         let vw = AppView.buildView()
-        vw.backgroundColor = .lightGray
+        vw.backgroundColor = containerColor
         
         return vw
     }()
     
     private lazy var containerView: UIView = {
         let vw = AppView.buildView()
+        vw.backgroundColor = self.containerColor
+        
         
         return vw
     }()
     
     private lazy var tableView: UITableView = {
         let vw = AppView.buildTableView()
+        vw.backgroundColor = self.containerColor
         vw.delegate = self
         vw.dataSource = self
         vw.register(
@@ -33,14 +38,6 @@ final class TeamView: UIView {
         )
         
         return vw
-    }()
-    
-    private lazy var testButton: UIButton = {
-        let bt = AppView.buildButton()
-        bt.setTitle("Play Chant", for: .normal)
-        bt.setImage(.init(systemName: "play.fill"), for: .normal)
-        
-        return bt
     }()
     
     override init(frame: CGRect) {
@@ -54,15 +51,13 @@ final class TeamView: UIView {
     }
     
     private func setupView() -> Void {
-        self.addSubview(self.baseView)
-        self.baseView.addSubview(self.containerView)
-        self.containerView.addSubview(self.tableView)
-        self.containerView.addSubview(self.testButton)
-        
-        self.baseView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+        self.addSubview(self.backgroundView)
+        self.backgroundView.addSubview(self.containerView)
+        self.backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
+        self.containerView.addSubview(self.tableView)
         self.containerView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
@@ -70,15 +65,8 @@ final class TeamView: UIView {
             make.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing)
         }
         
-        self.tableView.snp.makeConstraints({ make in
-            make.top.bottom.leading.trailing.equalToSuperview()
-        })
-        
-        self.testButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.width.equalTo(150.0)
-            make.height.equalTo(44.0)
+        self.tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(10.0)
         }
     }
 }
@@ -102,15 +90,17 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
         
         // Configure the cell...
-        
-        cell.changeNameLabel(to: "Team Number: \(indexPath.row)")
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .white.withAlphaComponent(0.5)
+        backgroundView.layer.cornerRadius = 10.0
+        cell.selectedBackgroundView = backgroundView
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let lb = UILabel()
-        lb.text = "Team"
+        lb.text = "English Premier League"
         lb.font = .preferredFont(forTextStyle: .title3).bold()
         
         return lb
@@ -122,6 +112,11 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
     }
     
     /*
