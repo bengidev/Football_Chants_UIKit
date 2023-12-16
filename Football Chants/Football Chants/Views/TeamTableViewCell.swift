@@ -60,7 +60,8 @@ final class TeamTableViewCell: UITableViewCell {
     private lazy var teamFoundedLabel: UILabel = {
         let lb = AppView.buildLabel()
         lb.text = "Founded: 1878"
-        lb.font = .preferredFont(forTextStyle: .headline).italic()
+        lb.textColor = .label.withAlphaComponent(0.7)
+        lb.font = .preferredFont(forTextStyle: .body).italic()
         
         return lb
     }()
@@ -68,7 +69,8 @@ final class TeamTableViewCell: UITableViewCell {
     private lazy var teamLeaderLabel: UILabel = {
         let lb = AppView.buildLabel()
         lb.text = "Current Manager: Erik ten Hag"
-        lb.font = .preferredFont(forTextStyle: .headline).italic()
+        lb.textColor = .label.withAlphaComponent(0.7)
+        lb.font = .preferredFont(forTextStyle: .body).italic()
         
         return lb
     }()
@@ -97,55 +99,51 @@ final class TeamTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.containerStackView)
         
         self.containerStackView.addArrangedSubview(self.vOneStackView)
+        self.containerStackView.setCustomSpacing(10.0, after: self.vOneStackView)
         self.containerStackView.addArrangedSubview(self.cellSeparatorView)
         self.containerStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         self.vOneStackView.addArrangedSubview(self.teamBadgeView)
+        self.vOneStackView.setCustomSpacing(20.0, after: self.teamBadgeView)
+        
         self.vOneStackView.addArrangedSubview(self.teamNameLabel)
+        self.vOneStackView.setCustomSpacing(10.0, after: self.teamNameLabel)
+        
         self.vOneStackView.addArrangedSubview(self.teamFoundedLabel)
         self.vOneStackView.addArrangedSubview(self.teamLeaderLabel)
+        self.vOneStackView.setCustomSpacing(10.0, after: self.teamLeaderLabel)
+        
         self.vOneStackView.addArrangedSubview(self.teamInfoTextView)
         self.vOneStackView.snp.makeConstraints { make in
             make.top.equalTo(self.contentView.snp.top)
-            make.bottom.equalTo(self.cellSeparatorView.snp.top).inset(-10.0)
             make.leading.trailing.equalTo(self.contentView)
         }
         
         self.teamBadgeView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10.0)
-            make.bottom.equalTo(self.teamNameLabel.snp.top).inset(-20.0)
             make.leading.equalToSuperview().inset(10.0)
             make.width.height.equalTo(50.0)
         }
         
         self.teamNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.teamBadgeView.snp.bottom)
-            make.bottom.equalTo(self.teamFoundedLabel.snp.top).inset(-10.0)
-            make.leading.trailing.equalToSuperview().inset(10.0)
+            make.leading.equalToSuperview().inset(10.0)
         }
         
         self.teamFoundedLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.teamNameLabel.snp.bottom)
-            make.bottom.equalTo(self.teamLeaderLabel.snp.top)
-            make.leading.trailing.equalToSuperview().inset(10.0)
+            make.leading.equalToSuperview().inset(10.0)
         }
         
         self.teamLeaderLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.teamFoundedLabel.snp.bottom)
-            make.bottom.equalTo(self.teamInfoTextView.snp.top)
-            make.leading.trailing.equalToSuperview().inset(10.0)
+            make.leading.equalToSuperview().inset(10.0)
         }
         
         self.teamInfoTextView.snp.makeConstraints { make in
-            make.top.equalTo(self.teamLeaderLabel.snp.bottom)
-            make.bottom.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
         
         self.cellSeparatorView.snp.makeConstraints { make in
-            make.top.equalTo(self.vOneStackView.snp.bottom)
-            make.bottom.leading.trailing.equalTo(self.contentView)
             make.height.equalTo(10.0)
         }
     }
