@@ -27,7 +27,7 @@ final class AppView: NSObject {
         bt.titleLabel?.font = .preferredFont(forTextStyle: .headline)
         bt.titleLabel?.adjustsFontSizeToFitWidth = true
         bt.titleLabel?.textAlignment = .center
-        bt.tintColor = .white
+        bt.tintColor = .label
         bt.backgroundColor = .systemBlue
         bt.layer.cornerRadius = 15.0
         bt.titleEdgeInsets.right = -10
@@ -41,7 +41,7 @@ final class AppView: NSObject {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         lb.textAlignment = .left
-        lb.textColor = .black
+        lb.textColor = .label
         lb.numberOfLines = 0
         lb.adjustsFontSizeToFitWidth = true
         
@@ -53,7 +53,7 @@ final class AppView: NSObject {
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.textAlignment = .left
-        vw.textColor = .black
+        vw.textColor = .label
         vw.textContainerInset = .init(
             top: 10.0,
             left: 10.0,
