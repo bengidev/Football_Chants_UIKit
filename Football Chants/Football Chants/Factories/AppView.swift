@@ -20,7 +20,7 @@ final class AppView: NSObject {
         return vw
     }
     
-    class func buildButton() -> UIButton {
+    class func buildImageTextButton() -> UIButton {
         let bt = UIButton(type: .system)
         bt.translatesAutoresizingMaskIntoConstraints = false
         bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -32,6 +32,34 @@ final class AppView: NSObject {
         bt.layer.cornerRadius = 15.0
         bt.titleEdgeInsets.right = -10
         bt.imageEdgeInsets.left = -10
+        
+        return bt
+    }
+    
+    class func buildTextButton() -> UIButton {
+        let bt = UIButton(type: .system)
+        bt.translatesAutoresizingMaskIntoConstraints = false
+        bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        bt.titleLabel?.font = .preferredFont(forTextStyle: .headline)
+        bt.titleLabel?.adjustsFontSizeToFitWidth = true
+        bt.titleLabel?.textAlignment = .center
+        bt.tintColor = .label
+        bt.backgroundColor = .systemBlue
+        bt.layer.cornerRadius = 15.0
+        
+        return bt
+    }
+    
+    class func buildImageButton() -> UIButton {
+        let bt = UIButton(type: .system)
+        bt.translatesAutoresizingMaskIntoConstraints = false
+        bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        bt.tintColor = .label
+        bt.backgroundColor = .systemBlue
+        bt.setPreferredSymbolConfiguration(
+            .init(font: .preferredFont(forTextStyle: .headline), scale: .default),
+            forImageIn: .normal
+        )
         
         return bt
     }
