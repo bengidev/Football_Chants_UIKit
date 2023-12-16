@@ -11,33 +11,40 @@ import UIKit
 
 final class TeamTableViewCell: UITableViewCell {
     static let cellIdentifier = "TeamTableViewCellIdentifier"
-
-    private var cellBackgroundColor: UIColor = .red
+    
+    var cellBackgroundColor: UIColor = .red
+    
+    private lazy var baseStackView: UIStackView = {
+        let vw = AppView.buildStackView()
+        vw.axis = .vertical
+        vw.backgroundColor = .clear
+        
+        return vw
+    }()
     
     private lazy var containerStackView: UIStackView = {
         let vw = AppView.buildStackView()
         vw.axis = .vertical
-        vw.backgroundColor = .clear
-        vw.layer.shadowRadius = 5.0
-        vw.layer.shadowOpacity = 0.5
+        vw.layer.cornerRadius = 10.0
+        vw.clipsToBounds = true
+        vw.backgroundColor = self.cellBackgroundColor
         
         return vw
     }()
     
-    private lazy var cellSeparatorView: UIView = {
-        let vw = AppView.buildView()
+    private lazy var hOneStackView: UIStackView = {
+        let vw = AppView.buildStackView()
+        vw.axis = .horizontal
+        vw.backgroundColor = .clear
         
         return vw
     }()
-
 
     private lazy var vOneStackView: UIStackView = {
         let vw = AppView.buildStackView()
         vw.axis = .vertical
         vw.alignment = .leading
-        vw.layer.cornerRadius = 10.0
-        vw.clipsToBounds = true
-        vw.backgroundColor = self.cellBackgroundColor
+        vw.backgroundColor = .clear
         
         return vw
     }()
@@ -52,7 +59,7 @@ final class TeamTableViewCell: UITableViewCell {
     private lazy var teamNameLabel: UILabel = {
         let lb = AppView.buildLabel()
         lb.text = "Manchester United"
-        lb.font = .preferredFont(forTextStyle: .title2).bold()
+        lb.font = .preferredFont(forTextStyle: .title2).rounded().bold()
         
         return lb
     }()
@@ -85,25 +92,56 @@ final class TeamTableViewCell: UITableViewCell {
         return vw
     }()
 
+    private lazy var playButton: UIButton = {
+        let bt = AppView.buildImageButton()
+        bt.addTarget(self, action: #selector(self.playButtonTapped(_:)), for: .touchUpInside)
+        bt.setImage(.init(systemName: "play.circle.fill"), for: .normal)
+        bt.tintColor = .white
+        bt.backgroundColor = .clear
+        bt.setPreferredSymbolConfiguration(
+            .init(font: .preferredFont(forTextStyle: .title1), scale: .large), 
+            forImageIn: .normal
+        )
+        
+        return bt
+    }()
+    
+    private lazy var cellSeparatorView: UIView = {
+        let vw = AppView.buildView()
+        vw.backgroundColor = .clear
+        
+        return vw
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setupView()
+        self.setupViews()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.setupView()
+        self.setupViews()
     }
     
-    private func setupView() -> Void {
-        self.contentView.addSubview(self.containerStackView)
+    @objc
+    func playButtonTapped(_ sender: UIButton) -> Void {
+        print("Play Button was tapped!")
+    }
+    
+    private func setupViews() -> Void {
+        self.contentView.addSubview(self.baseStackView)
         
-        self.containerStackView.addArrangedSubview(self.vOneStackView)
-        self.containerStackView.setCustomSpacing(10.0, after: self.vOneStackView)
-        self.containerStackView.addArrangedSubview(self.cellSeparatorView)
-        self.containerStackView.snp.makeConstraints { make in
+        self.baseStackView.addArrangedSubview(self.containerStackView)
+        self.baseStackView.addArrangedSubview(self.cellSeparatorView)
+        self.baseStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        self.containerStackView.addArrangedSubview(self.hOneStackView)
+        self.containerStackView.setCustomSpacing(10.0, after: self.hOneStackView)
+        
+        self.hOneStackView.addArrangedSubview(self.vOneStackView)
+        self.hOneStackView.addArrangedSubview(self.playButton)
         
         self.vOneStackView.addArrangedSubview(self.teamBadgeView)
         self.vOneStackView.setCustomSpacing(20.0, after: self.teamBadgeView)
@@ -116,11 +154,7 @@ final class TeamTableViewCell: UITableViewCell {
         self.vOneStackView.setCustomSpacing(10.0, after: self.teamLeaderLabel)
         
         self.vOneStackView.addArrangedSubview(self.teamInfoTextView)
-        self.vOneStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.contentView.snp.top)
-            make.leading.trailing.equalTo(self.contentView)
-        }
-        
+
         self.teamBadgeView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10.0)
             make.leading.equalToSuperview().inset(10.0)
@@ -141,6 +175,10 @@ final class TeamTableViewCell: UITableViewCell {
         
         self.teamInfoTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+        }
+        
+        self.playButton.snp.makeConstraints { make in
+            make.width.equalTo(50.0)
         }
         
         self.cellSeparatorView.snp.makeConstraints { make in
