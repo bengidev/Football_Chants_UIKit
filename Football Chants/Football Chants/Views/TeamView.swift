@@ -42,15 +42,45 @@ final class TeamView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupView()
+        self.setupViews()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.setupView()
+        self.setupViews()
     }
     
-    private func setupView() -> Void {
+    @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+        let touchPoint = sender.location(in: self.tableView)
+        
+        if sender.state == .began {
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                // your code here, get the row for the indexPath or do whatever you want
+                print("Longpress Began at: \(indexPath)")
+                
+                guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
+                cell.cellBackgroundColor = .yellow
+
+                print("Longpress Began at: \(indexPath)")
+                
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        } else if sender.state == .ended {
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                // your code here, get the row for the indexPath or do whatever you want
+                print("Longpress Ended at: \(indexPath)")
+                
+                guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
+                cell.cellBackgroundColor = .blue
+
+                print("Longpress Ended at: \(indexPath)")
+                
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
+    
+    private func setupViews() -> Void {
         self.addSubview(self.backgroundView)
         self.backgroundView.addSubview(self.containerView)
         self.backgroundView.snp.makeConstraints { make in
@@ -69,6 +99,15 @@ final class TeamView: UIView {
             make.edges.equalToSuperview().inset(10.0)
         }
     }
+    
+    private func setupLongPressGesture() -> Void {
+        let longPressRecognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(self.handleLongPress)
+        )
+        self.tableView.addGestureRecognizer(longPressRecognizer)
+    }
+
 }
 
 extension TeamView: UITableViewDelegate, UITableViewDataSource {
@@ -111,6 +150,12 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
+        cell.cellBackgroundColor = .blue
+        
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+
+        print("Tapped Index: \(indexPath)")
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
