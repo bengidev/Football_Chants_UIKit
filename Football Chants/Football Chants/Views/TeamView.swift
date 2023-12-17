@@ -79,7 +79,7 @@ final class TeamView: UIView {
             make.edges.equalToSuperview().inset(10.0)
         }
     }
-
+    
     private func setupLongPressGesture() -> Void {
         let longPressRecognizer = UILongPressGestureRecognizer(
             target: self,
@@ -134,7 +134,6 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         return self.viewModel?.teams.count ?? 0
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
         var teams: [Team] = self.viewModel?.teams ?? []
@@ -142,23 +141,20 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         // Configure the cell...
         
         cell.selectionStyle = .none
-        cell.configureTeamCellViews(teams[indexPath.row])
+        cell.updateCellViews(with: teams[indexPath.row])
         
         cell.didTapPlayChantButton = { [weak self] in
-            teams[indexPath.row].toggleIsPlayingChant()
-            cell.configureTeamCellViews(teams[indexPath.row])
-            
-            self?.refreshTableView()
+            self?.viewModel?.playChant(for: teams[indexPath.row])
+            tableView.reloadData()
         }
         
         cell.didTapInformationButton = { [weak self] in
             teams[indexPath.row].toggleIsShowingInformation()
-            cell.configureTeamCellViews(teams[indexPath.row])
+            cell.updateCellViews(with: teams[indexPath.row])
             
             self?.refreshTableView()
         }
         
-        self.refreshTableView()
         return cell
     }
     
@@ -176,21 +172,6 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
-        var teams: [Team] = self.viewModel?.teams ?? []
-        
-        cell.configureCellBackgroundColor(teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
-        
-        DispatchQueue.main.async {
-            cell.configureCellBackgroundColor(teams[indexPath.row].teamType.background)
-        }
-        
-        cell.configureTeamCellViews(teams[indexPath.row])
-        
-        self.refreshTableView()
-        
-        print("Tapped Index: \(indexPath)")
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -204,7 +185,7 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         self.tableView.setNeedsLayout()
         self.tableView.endUpdates()
     }
-
+    
 }
 
 #if DEBUG
