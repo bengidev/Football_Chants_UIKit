@@ -131,7 +131,7 @@ final class TeamTableViewCell: UITableViewCell {
         self.setupViews()
     }
     
-    func configureTeamCellViews(_ team: Team) -> Void {
+    func updateCellViews(with team: Team) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.containerStackView.backgroundColor = team.teamType.background
             self.teamBadgeView.image = team.teamType.badge
@@ -160,7 +160,7 @@ final class TeamTableViewCell: UITableViewCell {
     func configureCellBackgroundColor(_ color: UIColor) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.containerStackView.backgroundColor = color
-            self.layoutIfNeeded()
+            self.setNeedsLayout()
         }
     }
 
