@@ -141,24 +141,22 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         
         cell.selectionStyle = .none
         cell.configureTeamCellViews(self.teams[indexPath.row])
-        cell.layoutIfNeeded()
         
-        cell.didTapPlayChantButton = {
-            tableView.performBatchUpdates {
-                self.teams[indexPath.row].toggleIsPlayingChant()
-                cell.configureTeamCellViews(self.teams[indexPath.row])
-                cell.layoutIfNeeded()
-            }
+        cell.didTapPlayChantButton = { [weak self] in
+            self?.teams[indexPath.row].toggleIsPlayingChant()
+            cell.configureTeamCellViews(self?.teams[indexPath.row] ?? .empty)
+            
+            self?.refreshTableView()
         }
         
-        cell.didTapInformationButton = {
-            tableView.performBatchUpdates {
-                self.teams[indexPath.row].toggleIsShowingInformation()
-                cell.configureTeamCellViews(self.teams[indexPath.row])
-                cell.layoutIfNeeded()
-            }
+        cell.didTapInformationButton = { [weak self] in
+            self?.teams[indexPath.row].toggleIsShowingInformation()
+            cell.configureTeamCellViews(self?.teams[indexPath.row] ?? .empty)
+            
+            self?.refreshTableView()
         }
         
+        self.refreshTableView()
         return cell
     }
     
@@ -179,60 +177,31 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         
         guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
         
-        tableView.performBatchUpdates {
-            cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
-            
-            DispatchQueue.main.async {
-                cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background)
-            }
-            
-            cell.configureTeamCellViews(self.teams[indexPath.row])
-            cell.layoutIfNeeded()
+        cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
+        
+        DispatchQueue.main.async {
+            cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background)
         }
+        
+        cell.configureTeamCellViews(self.teams[indexPath.row])
+        
+        self.refreshTableView()
         
         print("Tapped Index: \(indexPath)")
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = .clear
-        cell.layoutIfNeeded()
+        
+        self.refreshTableView()
     }
     
-    /*
-     // Override to support conditional editing of the table view.
-     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
+    private func refreshTableView() -> Void {
+        self.tableView.beginUpdates()
+        self.tableView.setNeedsLayout()
+        self.tableView.endUpdates()
+    }
+
 }
 
 #if DEBUG
