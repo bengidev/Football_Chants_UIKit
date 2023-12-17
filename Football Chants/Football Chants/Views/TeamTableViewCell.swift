@@ -132,7 +132,7 @@ final class TeamTableViewCell: UITableViewCell {
     }
     
     func configureTeamCellViews(_ team: Team) -> Void {
-        UIView.animate(withDuration: 0.0) {
+        UIView.animate(withDuration: 1.0) {
             self.containerStackView.backgroundColor = team.teamType.background
             self.teamBadgeView.image = team.teamType.badge
             self.teamNameLabel.text = team.name
@@ -158,7 +158,7 @@ final class TeamTableViewCell: UITableViewCell {
     }
     
     func configureCellBackgroundColor(_ color: UIColor) -> Void {
-        UIView.animate(withDuration: 0.0) {
+        UIView.animate(withDuration: 1.0) {
             self.containerStackView.backgroundColor = color
             self.layoutIfNeeded()
         }
@@ -235,6 +235,7 @@ final class TeamTableViewCell: UITableViewCell {
     private func playButtonTapped(_ sender: UIButton) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.didTapPlayChantButton?()
+            self.layoutIfNeeded()
         }
     }
     
@@ -242,6 +243,7 @@ final class TeamTableViewCell: UITableViewCell {
     private func informationButtonTapped(_ sender: UIButton) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.didTapInformationButton?()
+            self.layoutIfNeeded()
         }
     }
 }
