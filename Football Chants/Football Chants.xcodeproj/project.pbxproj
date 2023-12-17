@@ -23,6 +23,10 @@
 		B68B801B2B2913D1001A5037 /* TeamTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B801A2B2913D1001A5037 /* TeamTableViewCell.swift */; };
 		B68B801F2B293655001A5037 /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B801E2B293655001A5037 /* TeamView.swift */; };
 		B68B80222B294ADE001A5037 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68B80212B294ADE001A5037 /* UIFont+Extension.swift */; };
+		B69CD3E22B2E644B00A6319B /* TeamViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69CD3E12B2E644B00A6319B /* TeamViewModel.swift */; };
+		B69CD3E52B2E64D700A6319B /* TeamType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69CD3E42B2E64D700A6319B /* TeamType.swift */; };
+		B69CD3E72B2E651800A6319B /* TeamLeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69CD3E62B2E651800A6319B /* TeamLeader.swift */; };
+		B69CD3E92B2E65BD00A6319B /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69CD3E82B2E65BD00A6319B /* Team.swift */; };
 		B6C717F62B2ACC350097E94F /* leicester.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6C717E42B2ACC330097E94F /* leicester.mp3 */; };
 		B6C717F72B2ACC350097E94F /* aston_villa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6C717E52B2ACC330097E94F /* aston_villa.mp3 */; };
 		B6C717F82B2ACC350097E94F /* leeds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6C717E62B2ACC330097E94F /* leeds.mp3 */; };
@@ -63,6 +67,10 @@
 		B68B801A2B2913D1001A5037 /* TeamTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamTableViewCell.swift; sourceTree = "<group>"; };
 		B68B801E2B293655001A5037 /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
 		B68B80212B294ADE001A5037 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		B69CD3E12B2E644B00A6319B /* TeamViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamViewModel.swift; sourceTree = "<group>"; };
+		B69CD3E42B2E64D700A6319B /* TeamType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamType.swift; sourceTree = "<group>"; };
+		B69CD3E62B2E651800A6319B /* TeamLeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamLeader.swift; sourceTree = "<group>"; };
+		B69CD3E82B2E65BD00A6319B /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		B6C717E42B2ACC330097E94F /* leicester.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = leicester.mp3; sourceTree = "<group>"; };
 		B6C717E52B2ACC330097E94F /* aston_villa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = aston_villa.mp3; sourceTree = "<group>"; };
 		B6C717E62B2ACC330097E94F /* leeds.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = leeds.mp3; sourceTree = "<group>"; };
@@ -127,6 +135,8 @@
 			children = (
 				B627EBBC2B28479D004D7598 /* Application */,
 				B627EBBE2B2847D0004D7598 /* Views */,
+				B69CD3E02B2E642C00A6319B /* ViewModels */,
+				B69CD3E32B2E648700A6319B /* Models */,
 				B68083932B2A6E8A002C3649 /* Factories */,
 				B68B80202B294AB0001A5037 /* Extensions */,
 				B627EBBD2B2847B7004D7598 /* Resources */,
@@ -200,6 +210,24 @@
 				B68B80212B294ADE001A5037 /* UIFont+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B69CD3E02B2E642C00A6319B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B69CD3E12B2E644B00A6319B /* TeamViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B69CD3E32B2E648700A6319B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B69CD3E42B2E64D700A6319B /* TeamType.swift */,
+				B69CD3E62B2E651800A6319B /* TeamLeader.swift */,
+				B69CD3E82B2E65BD00A6319B /* Team.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B6C717E32B2ACC1D0097E94F /* Football Chants */ = {
@@ -374,13 +402,17 @@
 				B627EBC02B2847DE004D7598 /* AppViewController.swift in Sources */,
 				B627EBCB2B284C76004D7598 /* TabBarControllerPreview.swift in Sources */,
 				B627EBA82B2846F0004D7598 /* AppDelegate.swift in Sources */,
+				B69CD3E52B2E64D700A6319B /* TeamType.swift in Sources */,
 				B68B80222B294ADE001A5037 /* UIFont+Extension.swift in Sources */,
+				B69CD3E92B2E65BD00A6319B /* Team.swift in Sources */,
 				B627EBAA2B2846F0004D7598 /* SceneDelegate.swift in Sources */,
 				B627EBCD2B284C76004D7598 /* NavigationControllerPreview.swift in Sources */,
 				B68083952B2A6E9D002C3649 /* AppView.swift in Sources */,
 				B627EBCA2B284C76004D7598 /* ViewPreview.swift in Sources */,
 				B68B801B2B2913D1001A5037 /* TeamTableViewCell.swift in Sources */,
 				B68B801F2B293655001A5037 /* TeamView.swift in Sources */,
+				B69CD3E22B2E644B00A6319B /* TeamViewModel.swift in Sources */,
+				B69CD3E72B2E651800A6319B /* TeamLeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
