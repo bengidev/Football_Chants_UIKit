@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 final class TeamView: UIView {
-    private var teams: [Team] = []
+    private var viewModel: TeamViewModel?
     private var containerColor: UIColor = .lightGray
     
     private lazy var backgroundView: UIView = {
@@ -52,9 +52,9 @@ final class TeamView: UIView {
         self.setupViews()
     }
     
-    func configureTeamData(_ teams: [Team]) -> Void {
+    func configureViewModel(_ viewModel: TeamViewModel) -> Void {
         UIView.animate(withDuration: 1.0) {
-            self.teams = teams
+            self.viewModel = viewModel
         }
     }
     
@@ -94,6 +94,7 @@ final class TeamView: UIView {
     }
     
     private func changeCellBackgroundInTouch(_ sender: UILongPressGestureRecognizer) -> Void {
+        let teams: [Team] = self.viewModel?.teams ?? []
         let touchPoint = sender.location(in: self.tableView)
         
         sender.minimumPressDuration = 0.2
@@ -101,7 +102,7 @@ final class TeamView: UIView {
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
                 guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
                 
-                let badgeColor = self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5)
+                let badgeColor = teams[indexPath.row].teamType.background.withAlphaComponent(0.5)
                 cell.configureCellBackgroundColor(badgeColor)
                 
                 print("Long Press Began at: \(indexPath)")
@@ -110,7 +111,7 @@ final class TeamView: UIView {
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
                 guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
                 
-                let badgeColor = self.teams[indexPath.row].teamType.background
+                let badgeColor = teams[indexPath.row].teamType.background
                 cell.configureCellBackgroundColor(badgeColor)
                 
                 print("Long Press Ended at: \(indexPath)")
@@ -130,28 +131,29 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return self.teams.count
+        return self.viewModel?.teams.count ?? 0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
+        var teams: [Team] = self.viewModel?.teams ?? []
         
         // Configure the cell...
         
         cell.selectionStyle = .none
-        cell.configureTeamCellViews(self.teams[indexPath.row])
+        cell.configureTeamCellViews(teams[indexPath.row])
         
         cell.didTapPlayChantButton = { [weak self] in
-            self?.teams[indexPath.row].toggleIsPlayingChant()
-            cell.configureTeamCellViews(self?.teams[indexPath.row] ?? .empty)
+            teams[indexPath.row].toggleIsPlayingChant()
+            cell.configureTeamCellViews(teams[indexPath.row])
             
             self?.refreshTableView()
         }
         
         cell.didTapInformationButton = { [weak self] in
-            self?.teams[indexPath.row].toggleIsShowingInformation()
-            cell.configureTeamCellViews(self?.teams[indexPath.row] ?? .empty)
+            teams[indexPath.row].toggleIsShowingInformation()
+            cell.configureTeamCellViews(teams[indexPath.row])
             
             self?.refreshTableView()
         }
@@ -176,14 +178,15 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
+        var teams: [Team] = self.viewModel?.teams ?? []
         
-        cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
+        cell.configureCellBackgroundColor(teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
         
         DispatchQueue.main.async {
-            cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background)
+            cell.configureCellBackgroundColor(teams[indexPath.row].teamType.background)
         }
         
-        cell.configureTeamCellViews(self.teams[indexPath.row])
+        cell.configureTeamCellViews(teams[indexPath.row])
         
         self.refreshTableView()
         
