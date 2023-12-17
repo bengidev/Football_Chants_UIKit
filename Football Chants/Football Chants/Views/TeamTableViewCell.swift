@@ -190,34 +190,30 @@ final class TeamTableViewCell: UITableViewCell {
         }
         self.vOneStackView.addArrangedSubview(self.teamBadgeView)
         self.vOneStackView.setCustomSpacing(20.0, after: self.teamBadgeView)
-        
-        self.vOneStackView.addArrangedSubview(self.teamNameLabel)
-        self.vOneStackView.setCustomSpacing(10.0, after: self.teamNameLabel)
-        
-        self.vOneStackView.addArrangedSubview(self.teamFoundedLabel)
-        self.vOneStackView.addArrangedSubview(self.teamLeaderLabel)
-        self.vOneStackView.setCustomSpacing(10.0, after: self.teamLeaderLabel)
-        
-        self.vOneStackView.addArrangedSubview(self.teamInfoTextView)
-        
         self.teamBadgeView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10.0)
             make.leading.equalToSuperview().inset(10.0)
             make.width.height.equalTo(50.0)
         }
         
+        self.vOneStackView.addArrangedSubview(self.teamNameLabel)
+        self.vOneStackView.setCustomSpacing(10.0, after: self.teamNameLabel)
         self.teamNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10.0)
         }
         
+        self.vOneStackView.addArrangedSubview(self.teamFoundedLabel)
         self.teamFoundedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10.0)
         }
         
+        self.vOneStackView.addArrangedSubview(self.teamLeaderLabel)
+        self.vOneStackView.setCustomSpacing(10.0, after: self.teamLeaderLabel)
         self.teamLeaderLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10.0)
         }
         
+        self.vOneStackView.addArrangedSubview(self.teamInfoTextView)
         self.teamInfoTextView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
