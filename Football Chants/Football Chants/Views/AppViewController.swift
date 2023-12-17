@@ -10,6 +10,8 @@ import SwiftUI
 import UIKit
 
 final class AppViewController: UIViewController {
+    private let viewModel: TeamViewModel = .init()
+    
     private lazy var uiView = TeamView()
 
     override func loadView() {
@@ -22,10 +24,8 @@ final class AppViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-
-    private func setupView() -> Void {
-        self.view.addSubview(self.uiView)
+        
+        self.uiView.configureTeamData(self.viewModel.teams)
     }
 
 }
