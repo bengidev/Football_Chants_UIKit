@@ -10,6 +10,7 @@ import SwiftUI
 import UIKit
 
 final class TeamView: UIView {
+    private var teams: [Team] = []
     private var containerColor: UIColor = .lightGray
     
     private lazy var backgroundView: UIView = {
@@ -29,6 +30,7 @@ final class TeamView: UIView {
     
     private lazy var tableView: UITableView = {
         let vw = AppView.buildTableView()
+        vw.showsVerticalScrollIndicator = false
         vw.backgroundColor = self.containerColor
         vw.delegate = self
         vw.dataSource = self
@@ -39,7 +41,7 @@ final class TeamView: UIView {
         
         return vw
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupViews()
@@ -50,37 +52,15 @@ final class TeamView: UIView {
         self.setupViews()
     }
     
-    @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
-        let touchPoint = sender.location(in: self.tableView)
-        
-        if sender.state == .began {
-            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                // your code here, get the row for the indexPath or do whatever you want
-                print("Longpress Began at: \(indexPath)")
-                
-                guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
-                cell.cellBackgroundColor = .yellow
-
-                print("Longpress Began at: \(indexPath)")
-                
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-        } else if sender.state == .ended {
-            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                // your code here, get the row for the indexPath or do whatever you want
-                print("Longpress Ended at: \(indexPath)")
-                
-                guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
-                cell.cellBackgroundColor = .blue
-
-                print("Longpress Ended at: \(indexPath)")
-                
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
+    func configureTeamData(_ teams: [Team]) -> Void {
+        UIView.animate(withDuration: 1.0) {
+            self.teams = teams
         }
     }
     
     private func setupViews() -> Void {
+        self.setupLongPressGesture()
+        
         self.addSubview(self.backgroundView)
         self.backgroundView.addSubview(self.containerView)
         self.backgroundView.snp.makeConstraints { make in
@@ -99,15 +79,44 @@ final class TeamView: UIView {
             make.edges.equalToSuperview().inset(10.0)
         }
     }
-    
+
     private func setupLongPressGesture() -> Void {
         let longPressRecognizer = UILongPressGestureRecognizer(
             target: self,
-            action: #selector(self.handleLongPress)
+            action: #selector(self.handleLongPressGesture(_:))
         )
         self.tableView.addGestureRecognizer(longPressRecognizer)
     }
-
+    
+    @objc
+    private func handleLongPressGesture(_ sender: UILongPressGestureRecognizer) {
+        self.changeCellBackgroundInTouch(sender)
+    }
+    
+    private func changeCellBackgroundInTouch(_ sender: UILongPressGestureRecognizer) -> Void {
+        let touchPoint = sender.location(in: self.tableView)
+        
+        sender.minimumPressDuration = 0.2
+        if sender.state == .began {
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
+                
+                let badgeColor = self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5)
+                cell.configureCellBackgroundColor(badgeColor)
+                
+                print("Long Press Began at: \(indexPath)")
+            }
+        } else if sender.state == .ended {
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
+                
+                let badgeColor = self.teams[indexPath.row].teamType.background
+                cell.configureCellBackgroundColor(badgeColor)
+                
+                print("Long Press Ended at: \(indexPath)")
+            }
+        }
+    }
 }
 
 extension TeamView: UITableViewDelegate, UITableViewDataSource {
@@ -121,7 +130,7 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 100
+        return self.teams.count
     }
     
     
@@ -129,8 +138,28 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
         
         // Configure the cell...
-        
+
         cell.selectionStyle = .none
+        cell.configureTeamCellViews(self.teams[indexPath.row])
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        
+        cell.didTapPlayChantButton = {
+            self.teams[indexPath.row].toggleIsPlayingChant()
+            cell.configureTeamCellViews(self.teams[indexPath.row])
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        
+        cell.didTapInformationButton = {
+            self.teams[indexPath.row].toggleIsShowingInformation()
+            cell.configureTeamCellViews(self.teams[indexPath.row])
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
         
         return cell
     }
@@ -151,10 +180,16 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
-        cell.cellBackgroundColor = .blue
+        cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
         
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-
+        DispatchQueue.main.async {
+            cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background)
+        }
+        
+        cell.configureTeamCellViews(self.teams[indexPath.row])
+        
+        tableView.beginUpdates()
+        tableView.endUpdates()
         print("Tapped Index: \(indexPath)")
     }
     
