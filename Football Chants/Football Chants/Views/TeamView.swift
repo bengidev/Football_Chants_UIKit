@@ -138,21 +138,23 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
         var teams: [Team] = self.viewModel?.teams ?? []
         
-        // Configure the cell...
-        
         cell.selectionStyle = .none
         cell.updateCellViews(with: teams[indexPath.row])
         
         cell.didTapPlayChantButton = { [weak self] in
-            self?.viewModel?.playChant(for: teams[indexPath.row])
-            tableView.reloadData()
+            tableView.performBatchUpdates {
+                self?.viewModel?.playChant(for: teams[indexPath.row])
+                tableView.reloadRows(at: [indexPath], with: .none)
+                tableView.setNeedsLayout()
+            }
         }
         
-        cell.didTapInformationButton = { [weak self] in
-            teams[indexPath.row].toggleIsShowingInformation()
-            cell.updateCellViews(with: teams[indexPath.row])
-            
-            self?.refreshTableView()
+        cell.didTapInformationButton = {
+            tableView.performBatchUpdates {
+                teams[indexPath.row].toggleIsShowingInformation()
+                cell.updateCellViews(with: teams[indexPath.row])
+                tableView.setNeedsLayout()
+            }
         }
         
         return cell
@@ -176,16 +178,7 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = .clear
-        
-        self.refreshTableView()
     }
-    
-    private func refreshTableView() -> Void {
-        self.tableView.beginUpdates()
-        self.tableView.setNeedsLayout()
-        self.tableView.endUpdates()
-    }
-    
 }
 
 #if DEBUG
