@@ -11,6 +11,7 @@ import UIKit
 
 final class AppViewController: UIViewController {
     private let viewModel: TeamViewModel = .init()
+    private let audioService: AudioPlayerService = .init()
     
     private lazy var uiView = TeamView()
 
@@ -25,7 +26,7 @@ final class AppViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.uiView.configureTeamData(self.viewModel.teams)
+        self.uiView.configureViewModel(self.viewModel)
     }
 
 }
