@@ -138,27 +138,25 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TeamTableViewCell.cellIdentifier, for: indexPath) as? TeamTableViewCell else { return .init() }
         
         // Configure the cell...
-
+        
         cell.selectionStyle = .none
         cell.configureTeamCellViews(self.teams[indexPath.row])
-        
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        cell.layoutIfNeeded()
         
         cell.didTapPlayChantButton = {
-            self.teams[indexPath.row].toggleIsPlayingChant()
-            cell.configureTeamCellViews(self.teams[indexPath.row])
-            
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            tableView.performBatchUpdates {
+                self.teams[indexPath.row].toggleIsPlayingChant()
+                cell.configureTeamCellViews(self.teams[indexPath.row])
+                cell.layoutIfNeeded()
+            }
         }
         
         cell.didTapInformationButton = {
-            self.teams[indexPath.row].toggleIsShowingInformation()
-            cell.configureTeamCellViews(self.teams[indexPath.row])
-            
-            tableView.beginUpdates()
-            tableView.endUpdates()
+            tableView.performBatchUpdates {
+                self.teams[indexPath.row].toggleIsShowingInformation()
+                cell.configureTeamCellViews(self.teams[indexPath.row])
+                cell.layoutIfNeeded()
+            }
         }
         
         return cell
@@ -180,21 +178,24 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let cell = tableView.cellForRow(at: indexPath) as? TeamTableViewCell else { return }
-        cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
         
-        DispatchQueue.main.async {
-            cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background)
+        tableView.performBatchUpdates {
+            cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background.withAlphaComponent(0.5))
+            
+            DispatchQueue.main.async {
+                cell.configureCellBackgroundColor(self.teams[indexPath.row].teamType.background)
+            }
+            
+            cell.configureTeamCellViews(self.teams[indexPath.row])
+            cell.layoutIfNeeded()
         }
         
-        cell.configureTeamCellViews(self.teams[indexPath.row])
-        
-        tableView.beginUpdates()
-        tableView.endUpdates()
         print("Tapped Index: \(indexPath)")
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = .clear
+        cell.layoutIfNeeded()
     }
     
     /*
