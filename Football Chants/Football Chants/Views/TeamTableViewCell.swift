@@ -12,7 +12,8 @@ import UIKit
 final class TeamTableViewCell: UITableViewCell {
     static let cellIdentifier = "TeamTableViewCellIdentifier"
     
-    var cellBackgroundColor: UIColor = .red
+    var didTapPlayChantButton: (() -> Void)? = {}
+    var didTapInformationButton: (() -> Void)? = {}
     
     private lazy var baseStackView: UIStackView = {
         let vw = AppView.buildStackView()
@@ -27,7 +28,6 @@ final class TeamTableViewCell: UITableViewCell {
         vw.axis = .vertical
         vw.layer.cornerRadius = 10.0
         vw.clipsToBounds = true
-        vw.backgroundColor = self.cellBackgroundColor
         
         return vw
     }()
@@ -39,7 +39,7 @@ final class TeamTableViewCell: UITableViewCell {
         
         return vw
     }()
-
+    
     private lazy var vOneStackView: UIStackView = {
         let vw = AppView.buildStackView()
         vw.axis = .vertical
@@ -51,22 +51,19 @@ final class TeamTableViewCell: UITableViewCell {
     
     private lazy var teamBadgeView: UIImageView = {
         let vw = AppView.imageView()
-        vw.image = .init(resource: .manchesterUnitedIc)
         
         return vw
     }()
-
+    
     private lazy var teamNameLabel: UILabel = {
         let lb = AppView.buildLabel()
-        lb.text = "Manchester United"
         lb.font = .preferredFont(forTextStyle: .title2).rounded().bold()
         
         return lb
     }()
-
+    
     private lazy var teamFoundedLabel: UILabel = {
         let lb = AppView.buildLabel()
-        lb.text = "Founded: 1878"
         lb.textColor = .label.withAlphaComponent(0.7)
         lb.font = .preferredFont(forTextStyle: .body).italic()
         
@@ -75,7 +72,6 @@ final class TeamTableViewCell: UITableViewCell {
     
     private lazy var teamLeaderLabel: UILabel = {
         let lb = AppView.buildLabel()
-        lb.text = "Current Manager: Erik ten Hag"
         lb.textColor = .label.withAlphaComponent(0.7)
         lb.font = .preferredFont(forTextStyle: .body).italic()
         
@@ -87,19 +83,31 @@ final class TeamTableViewCell: UITableViewCell {
         vw.isScrollEnabled = false
         vw.backgroundColor = .clear
         vw.font = .preferredFont(forTextStyle: .footnote)
-        vw.text = "Manchester United Football Club, commonly referred to as Man United (often stylised as Man Utd), or simply United, is a professional football club based in Old Trafford, Greater Manchester, England. The club competes in the Premier League, the top division in the English football league system. Nicknamed the Red Devils, they were founded as Newton Heath LYR Football Club in 1878, but changed their name to Manchester United in 1902. After a spell playing in Clayton, Manchester, the club moved to their current stadium, Old Trafford, in 1910."
         
         return vw
     }()
-
+    
     private lazy var playButton: UIButton = {
         let bt = AppView.buildImageButton()
         bt.addTarget(self, action: #selector(self.playButtonTapped(_:)), for: .touchUpInside)
-        bt.setImage(.init(systemName: "play.circle.fill"), for: .normal)
         bt.tintColor = .white
         bt.backgroundColor = .clear
         bt.setPreferredSymbolConfiguration(
-            .init(font: .preferredFont(forTextStyle: .title1), scale: .large), 
+            .init(font: .preferredFont(forTextStyle: .title1), scale: .large),
+            forImageIn: .normal
+        )
+        
+        return bt
+    }()
+    
+    private lazy var informationButton: UIButton = {
+        let bt = AppView.buildImageTextButton()
+        bt.addTarget(self, action: #selector(self.informationButtonTapped(_:)), for: .touchUpInside)
+        bt.tintColor = .white
+        bt.backgroundColor = .clear
+        bt.titleLabel?.font = .preferredFont(forTextStyle: .footnote).bold()
+        bt.setPreferredSymbolConfiguration(
+            .init(font: .preferredFont(forTextStyle: .footnote), scale: .default),
             forImageIn: .normal
         )
         
@@ -112,23 +120,52 @@ final class TeamTableViewCell: UITableViewCell {
         
         return vw
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupViews()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.setupViews()
     }
     
-    @objc
-    func playButtonTapped(_ sender: UIButton) -> Void {
-        print("Play Button was tapped!")
+    func configureTeamCellViews(_ team: Team) -> Void {
+        UIView.animate(withDuration: 0.0) {
+            self.containerStackView.backgroundColor = team.teamType.background
+            self.teamBadgeView.image = team.teamType.badge
+            self.teamNameLabel.text = team.name
+            self.teamFoundedLabel.text = "Founded: \(team.founded)"
+            self.teamLeaderLabel.text = "Current \(team.teamLeader.job.rawValue): \(team.teamLeader.name)"
+            self.teamInfoTextView.text = team.info
+            self.teamInfoTextView.isHidden = !team.isShowingInformation
+            self.playButton.setImage(
+                .init(systemName: team.isPlayingChant ? "pause.circle.fill" : "play.circle.fill"),
+                for: .normal
+            )
+            self.informationButton.setTitle(
+                team.isShowingInformation ? "Hide Information" : "Show Information",
+                for: .normal
+            )
+            self.informationButton.setImage(
+                .init(systemName: team.isShowingInformation ? "chevron.up" : "chevron.down"),
+                for: .normal
+            )
+
+            self.layoutIfNeeded()
+        }
     }
     
+    func configureCellBackgroundColor(_ color: UIColor) -> Void {
+        UIView.animate(withDuration: 0.0) {
+            self.containerStackView.backgroundColor = color
+            self.layoutIfNeeded()
+        }
+    }
+
     private func setupViews() -> Void {
+        self.contentView.isUserInteractionEnabled = true
         self.contentView.addSubview(self.baseStackView)
         
         self.baseStackView.addArrangedSubview(self.containerStackView)
@@ -140,9 +177,17 @@ final class TeamTableViewCell: UITableViewCell {
         self.containerStackView.addArrangedSubview(self.hOneStackView)
         self.containerStackView.setCustomSpacing(10.0, after: self.hOneStackView)
         
+        self.containerStackView.addArrangedSubview(self.informationButton)
+        self.informationButton.snp.makeConstraints { make in
+            make.height.equalTo(44.0)
+        }
+        
         self.hOneStackView.addArrangedSubview(self.vOneStackView)
         self.hOneStackView.addArrangedSubview(self.playButton)
         
+        self.vOneStackView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+        }
         self.vOneStackView.addArrangedSubview(self.teamBadgeView)
         self.vOneStackView.setCustomSpacing(20.0, after: self.teamBadgeView)
         
@@ -154,7 +199,7 @@ final class TeamTableViewCell: UITableViewCell {
         self.vOneStackView.setCustomSpacing(10.0, after: self.teamLeaderLabel)
         
         self.vOneStackView.addArrangedSubview(self.teamInfoTextView)
-
+        
         self.teamBadgeView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10.0)
             make.leading.equalToSuperview().inset(10.0)
@@ -183,6 +228,20 @@ final class TeamTableViewCell: UITableViewCell {
         
         self.cellSeparatorView.snp.makeConstraints { make in
             make.height.equalTo(10.0)
+        }
+    }
+    
+    @objc
+    private func playButtonTapped(_ sender: UIButton) -> Void {
+        UIView.animate(withDuration: 1.0) {
+            self.didTapPlayChantButton?()
+        }
+    }
+    
+    @objc
+    private func informationButtonTapped(_ sender: UIButton) -> Void {
+        UIView.animate(withDuration: 1.0) {
+            self.didTapInformationButton?()
         }
     }
 }
