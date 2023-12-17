@@ -153,7 +153,7 @@ final class TeamTableViewCell: UITableViewCell {
                 for: .normal
             )
 
-            self.layoutIfNeeded()
+            self.setNeedsLayout()
         }
     }
     
