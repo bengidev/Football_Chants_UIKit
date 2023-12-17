@@ -87,4 +87,24 @@ class TeamViewModel {
              info: "Wolverhampton Wanderers Football Club, commonly known as Wolves, is a professional association football club based in the city of Wolverhampton in the West Midlands, England. Formed as St. Luke's F.C. in 1877, the club has played at Molineux Stadium since 1889 and has been competing in the Premier League, the top division of English football, since winning promotion in 2018. The 2020–21 season is the club's 66th season in total at the highest level.",
              founded: "1877", teamLeader: .init(name: "Nuno Espírito Santo", job: .headCoach)),
     ]
+    
+    private let audioManager = AudioPlayerService()
+    
+    func playChant(for selectedTeam: Team) -> Void {
+        for (index, team) in self.teams.enumerated() {
+            self.teams[index].resetPlayingChant()
+            
+            if team == selectedTeam && !selectedTeam.isPlayingChant {
+                self.teams[index].toggleIsPlayingChant()
+            } else {
+                self.teams[index].resetPlayingChant()
+            }
+        }
+        
+        if selectedTeam.isPlayingChant {
+            self.audioManager.resetChant()
+        } else {
+            self.audioManager.playChant(for: selectedTeam)
+        }
+    }
 }
