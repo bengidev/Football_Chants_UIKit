@@ -108,7 +108,7 @@ final class AppView: NSObject {
         vw.allowsSelection = true
         vw.separatorStyle = .none
         vw.rowHeight = UITableView.automaticDimension
-        vw.estimatedRowHeight = UITableView.automaticDimension
+        vw.estimatedRowHeight = 250.0
         
         return vw
     }
