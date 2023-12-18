@@ -144,7 +144,7 @@ extension TeamView: UITableViewDelegate, UITableViewDataSource {
         cell.didTapPlayChantButton = { [weak self] in
             tableView.performBatchUpdates {
                 self?.viewModel?.playChant(for: teams[indexPath.row])
-                tableView.reloadRows(at: [indexPath], with: .none)
+                tableView.reloadData()
                 tableView.setNeedsLayout()
             }
         }
