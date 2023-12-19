@@ -7,7 +7,7 @@ This repository was intended for the purpose of storing the process history of F
 - 
 
 ## Stacks 🪜
-- SwiftUI
+- UIKit (No Storyboards)
 - AVKit
 
 ## Resources 🎊
